@@ -1,0 +1,15 @@
+{
+  "main": "truffle.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "truffle test"
+  },
+  "dependencies": {
+    "@daonomic/tokens": "0.1.12"
+  },
+  "devDependencies": {
+    "@daonomic/tests-common": "~0.1"
+  }
+}
