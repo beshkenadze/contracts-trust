@@ -4,8 +4,8 @@ import "@daonomic/util/contracts/OwnableImpl.sol";
 import "@daonomic/tokens/contracts/TokenImpl.sol";
 
 contract TrustToken is OwnableImpl, TokenImpl {
-    string public constant name = "Trust Coin";
-    string public constant symbol = "TRUST";
+    string public constant name = "Trust";
+    string public constant symbol = "TST";
     uint8 public constant decimals = 18;
 
     mapping(address => bool) public whitelist;
