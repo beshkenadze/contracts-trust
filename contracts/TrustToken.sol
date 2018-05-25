@@ -8,7 +8,7 @@ contract TrustToken is OwnableImpl, TokenImpl {
     string public constant symbol = "TRUST";
     uint8 public constant decimals = 18;
 
-    mapping(address => bool) public allowed;
+    mapping(address => bool) public whitelist;
 
     constructor(uint _total) public {
         balances[msg.sender] = _total;
@@ -18,19 +18,19 @@ contract TrustToken is OwnableImpl, TokenImpl {
 
     function transfer(address _to, uint256 _value) public returns (bool) {
         onTransfer(msg.sender);
-        super.transfer(_to, _value);
+        return super.transfer(_to, _value);
     }
 
     function transferFrom(address _from, address _to, uint256 _value) public returns (bool) {
         onTransfer(_from);
-        super.transferFrom(_from, _to, _value);
+        return super.transferFrom(_from, _to, _value);
     }
 
-    function onTransfer(address _from) internal {
-        require(allowed[address(0)] || allowed[_from]);
+    function onTransfer(address _from) view internal {
+        require(whitelist[address(0)] || whitelist[_from]);
     }
 
-    function setAllowed(address _address, bool _value) onlyOwner public {
-        allowed[_address] = _value;
+    function setWhitelist(address _address, bool _value) onlyOwner public {
+        whitelist[_address] = _value;
     }
 }
