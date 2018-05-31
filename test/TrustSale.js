@@ -12,7 +12,7 @@ contract('TrustSale', function(accounts) {
 
   beforeEach(async function() {
     token = await Token.new(1000);
-    sale = await Sale.new(token.address);
+    sale = await Sale.new(token.address, "10000000000000000000");
     await allow(accounts[0]);
     await allow(sale.address);
     await token.transfer(sale.address, 1000);
@@ -28,20 +28,28 @@ contract('TrustSale', function(accounts) {
 
   it("should sell tokens for eth", async function() {
     await sale.setWhitelist(accounts[1], true);
-    await sale.setRate("0x0000000000000000000000000000000000000000", "10000000000000000000");
 
     await sale.sendTransaction({from: accounts[1], value: 5});
     assert.equal(await token.balanceOf(accounts[1]), 50);
+    assert.equal(await token.balanceOf(sale.address), 950);
     assert.equal(await token.totalSupply(), 1000);
   })
 
   it("should not sell if not whitelisted", async function() {
-    await sale.setRate("0x0000000000000000000000000000000000000000", "10000000000000000000");
-
     await expectThrow(
         sale.sendTransaction({from: accounts[1], value: 5})
     );
     assert.equal(await token.balanceOf(accounts[1]), 0);
+    assert.equal(await token.totalSupply(), 1000);
+  })
+
+  it("should let change rate", async function() {
+    await sale.setRate("1000000000000000000");
+    await sale.setWhitelist(accounts[1], true);
+
+    await sale.sendTransaction({from: accounts[1], value: 5});
+    assert.equal(await token.balanceOf(accounts[1]), 5);
+    assert.equal(await token.balanceOf(sale.address), 995);
     assert.equal(await token.totalSupply(), 1000);
   })
 
