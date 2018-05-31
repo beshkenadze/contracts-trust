@@ -7,7 +7,8 @@
     "test": "truffle test"
   },
   "dependencies": {
-    "@daonomic/tokens": "0.1.12"
+    "@daonomic/tokens": "0.1.12",
+    "@daonomic/sale": "0.1.32"
   },
   "devDependencies": {
     "@daonomic/tests-common": "~0.1"
