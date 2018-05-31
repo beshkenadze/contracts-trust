@@ -53,19 +53,4 @@ contract('TrustSale', function(accounts) {
     assert.equal(await token.totalSupply(), 1000);
   })
 
-  it("should let direct transfers", async function() {
-    assert.equal(await sale.canBuy(accounts[5]), false);
-    await sale.transfer(accounts[5], 100);
-    assert.equal(await token.balanceOf(accounts[5]), 100);
-    assert.equal(await token.balanceOf(sale.address), 900);
-    assert.equal(await token.totalSupply(), 1000);
-    assert.equal(await sale.canBuy(accounts[5]), true);
-  })
-
-  it("should not let direct transfers from others", async function() {
-    await expectThrow(
-      sale.transfer(accounts[5], 100, {from: accounts[1]})
-    );
-  });
-
 });
