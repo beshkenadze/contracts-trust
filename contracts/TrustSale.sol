@@ -23,4 +23,11 @@ contract TrustSale is OwnableImpl, SecuredImpl, TransferringSale, WhitelistSale 
     function setRate(uint256 _rate) onlyOwner public {
         rate = _rate;
     }
+
+    function transfer(address _buyer, uint256 _amount) onlyOwner public {
+        setWhitelistInternal(_buyer, true);
+        doPurchase(_buyer, _amount, 0);
+        emit Purchase(_buyer, address(0), 0, _amount, 0, "");
+        onPurchase(_buyer, address(0), 0, _amount, 0);
+    }
 }
