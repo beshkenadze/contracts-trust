@@ -2,8 +2,9 @@ pragma solidity ^0.4.24;
 
 import "@daonomic/util/contracts/OwnableImpl.sol";
 import "@daonomic/tokens/contracts/TokenImpl.sol";
+import "@daonomic/tokens/contracts/BurnableTokenImpl.sol";
 
-contract TrustToken is OwnableImpl, TokenImpl {
+contract TrustToken is OwnableImpl, TokenImpl, BurnableTokenImpl {
     string public constant name = "Trust";
     string public constant symbol = "TST";
     uint8 public constant decimals = 18;
