@@ -30,6 +30,19 @@ contract('TokenHolder', function(accounts) {
     assert.equal(await token.balanceOf(accounts[0]), 100);
   })
 
+  it("should not allow to withdraw more than 100 after 6 months", async function() {
+    var token = await Token.new();
+    var holder = await Holder.new(now() - 86400 * 200, 100, token.address);
+    await token.mint(holder.address, 100000);
+
+    await holder.withdraw();
+    assert.equal(await token.balanceOf(accounts[0]), 100);
+
+    await expectThrow(
+        holder.withdraw()
+    );
+  })
+
   it("should allow to withdraw 200 after 12 months", async function() {
     var token = await Token.new();
     var holder = await Holder.new(now() - 86400 * 400, 100, token.address);
