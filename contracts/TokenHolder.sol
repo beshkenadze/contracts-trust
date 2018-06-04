@@ -61,8 +61,4 @@ contract TokenHolder is Ownable {
     function calculateVestedAmount() internal returns (uint) {
         return now.sub(start).div(vestingInterval).mul(value);
     }
-
-    function getTime() constant public returns (uint) {
-        return now;
-    }
 }
