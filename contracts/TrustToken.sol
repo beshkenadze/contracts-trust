@@ -1,10 +1,9 @@
 pragma solidity ^0.4.24;
 
-import "@daonomic/util/contracts/OwnableImpl.sol";
-import "@daonomic/tokens/contracts/TokenImpl.sol";
-import "@daonomic/tokens/contracts/BurnableTokenImpl.sol";
+import "openzeppelin-solidity/contracts/token/ERC20/StandardBurnableToken.sol";
+import "openzeppelin-solidity/contracts/ownership/Ownable.sol";
 
-contract TrustToken is OwnableImpl, TokenImpl, BurnableTokenImpl {
+contract TrustToken is Ownable, StandardBurnableToken {
     string public constant name = "Trust";
     string public constant symbol = "TST";
     uint8 public constant decimals = 18;
@@ -13,8 +12,8 @@ contract TrustToken is OwnableImpl, TokenImpl, BurnableTokenImpl {
 
     constructor(uint _total) public {
         balances[msg.sender] = _total;
-        total = _total;
-        emitTransfer(address(0), msg.sender, _total);
+        totalSupply_ = _total;
+        emit Transfer(address(0), msg.sender, _total);
     }
 
     function transfer(address _to, uint256 _value) public returns (bool) {

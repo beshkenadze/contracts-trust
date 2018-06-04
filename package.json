@@ -7,8 +7,7 @@
     "test": "truffle test"
   },
   "dependencies": {
-    "@daonomic/tokens": "0.1.12",
-    "@daonomic/sale": "0.1.32"
+    "openzeppelin-solidity": "1.9.0"
   },
   "devDependencies": {
     "@daonomic/tests-common": "~0.1"
