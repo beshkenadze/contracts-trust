@@ -4,6 +4,7 @@ const Token = artifacts.require("MockToken.sol");
 const tests = require("@daonomic/tests-common");
 const expectThrow = tests.expectThrow;
 const randomAddress = tests.randomAddress;
+const awaitEvent = tests.awaitEvent;
 const increaseTime = tests.increaseTime;
 
 contract('TokenHolder', function(accounts) {
@@ -34,6 +35,18 @@ contract('TokenHolder', function(accounts) {
     await expectThrow(
         holder.release({from: accounts[1]})
     );
+  })
+
+  it("should emit Release event", async function() {
+    var token = await Token.new();
+    var holder = await Holder.new(now() - 86400 * 200, 100, token.address);
+    await token.mint(holder.address, 100000);
+    var Released = holder.Released({});
+
+    await holder.release();
+    assert.equal(await token.balanceOf(accounts[0]), 100);
+    var released = await awaitEvent(Released);
+    assert.equal(released.args.amount, 100);
   })
 
   it("should allow to release 100 after 6 months", async function() {
