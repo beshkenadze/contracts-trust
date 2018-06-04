@@ -58,7 +58,7 @@ contract TokenHolder is Ownable {
         released = released.add(toRelease);
     }
 
-    function calculateVestedAmount() internal returns (uint) {
+    function calculateVestedAmount() view internal returns (uint) {
         return now.sub(start).div(vestingInterval).mul(value);
     }
 }
