@@ -43,7 +43,7 @@ contract TokenHolder is Ownable {
     function withdraw() onlyOwner public {
         uint possibleToWithdraw = now.sub(start).div(vestingInterval).mul(value).sub(withdrawn);
         require(possibleToWithdraw > 0, "nothing to withdraw");
-        token.transfer(msg.sender, possibleToWithdraw);
+        require(token.transfer(msg.sender, possibleToWithdraw));
         withdrawn = withdrawn.add(possibleToWithdraw);
     }
 }
