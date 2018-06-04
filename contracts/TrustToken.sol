@@ -16,12 +16,12 @@ contract TrustToken is Ownable, StandardBurnableToken {
         emit Transfer(address(0), msg.sender, _total);
     }
 
-    function transfer(address _to, uint256 _value) public returns (bool) {
+    function transfer(address _to, uint _value) public returns (bool) {
         onTransfer(msg.sender);
         return super.transfer(_to, _value);
     }
 
-    function transferFrom(address _from, address _to, uint256 _value) public returns (bool) {
+    function transferFrom(address _from, address _to, uint _value) public returns (bool) {
         onTransfer(_from);
         return super.transferFrom(_from, _to, _value);
     }
