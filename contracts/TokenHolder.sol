@@ -8,7 +8,7 @@ import "openzeppelin-solidity/contracts/token/ERC20/ERC20Basic.sol";
 
 /**
  * @title Token Holder with vesting period
- * @dev holds any amount of tokens and allows to withdraw selected number of tokens after every 6 months (183 days)
+ * @dev holds any amount of tokens and allows to release selected number of tokens after every vestingInterval seconds
  */
 contract TokenHolder is Ownable {
     using SafeMath for uint;
@@ -16,19 +16,19 @@ contract TokenHolder is Ownable {
     event Released(uint amount);
 
     /**
-     * @dev every 6 (183 days) months owner can withdraw value tokens
-     */
-    uint constant public vestingInterval = 86400 * 183;
-    /**
      * @dev start of the vesting period
      */
     uint public start;
     /**
-     * @dev already withdrawn value
+     * @dev interval between token releases
+     */
+    uint public vestingInterval;
+    /**
+     * @dev already released value
      */
     uint public released;
     /**
-     * @dev value can be withdrawn every 6 months
+     * @dev value can be released every period
      */
     uint public value;
     /**
@@ -36,8 +36,9 @@ contract TokenHolder is Ownable {
      */
     ERC20Basic public token;
 
-    constructor(uint _start, uint _value, ERC20Basic _token) public {
+    constructor(uint _start, uint _vestingInterval, uint _value, ERC20Basic _token) public {
         start = _start;
+        vestingInterval = _vestingInterval;
         value = _value;
         token = _token;
     }
