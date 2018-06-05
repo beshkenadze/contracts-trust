@@ -29,7 +29,7 @@ contract('Migration', function(accounts) {
   }
 
   it("should have totalSupply=100M", async () => {
-    assert.equal((await token.totalSupply()).toFixed(), "100000000000000000000000000");
+    assert.equal((await token.totalSupply()).toFixed(), "120000000000000000000000000");
   });
 
   it("should not allow transfer at start", async function() {

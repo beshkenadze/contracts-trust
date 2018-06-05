@@ -11,11 +11,11 @@ contract Migration {
     mapping(string => address) holders;
 
     constructor(uint _start) public {
-        token = new TrustToken(100000000 * 10 ** 18);
+        token = new TrustToken(120000000 * 10 ** 18);
         token.setWhitelist(this, true);
-        createHolder("Reserve", 27000000 * 10 ** 18, _start, 183 * 86400, 4500000 * 10 ** 18);
-        createHolder("Team", 15000000 * 10 ** 18, _start, 183 * 86400, 2500000 * 10 ** 18);
-        createHolder("Advisors", 6000000 * 10 ** 18, _start, 91 * 86400, 1500000 * 10 ** 18);
+        createHolder("Reserve", 28800000 * 10 ** 18, _start, 183 * 86400, 7200000 * 10 ** 18);
+        createHolder("Team", 19200000 * 10 ** 18, _start, 183 * 86400, 2500000 * 10 ** 18);
+        createHolder("Advisors", 7200000 * 10 ** 18, _start - 91 * 86400, 91 * 86400, 1800000 * 10 ** 18);
         token.transfer(msg.sender, token.balanceOf(this));
         token.transferOwnership(msg.sender);
     }
