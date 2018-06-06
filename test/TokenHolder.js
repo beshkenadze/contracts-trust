@@ -1,5 +1,6 @@
 const Holder = artifacts.require("TokenHolder.sol");
 const Token = artifacts.require("MockToken.sol");
+const TimeProvider = artifacts.require("TimeProvider.sol");
 
 const tests = require("@daonomic/tests-common");
 const expectThrow = tests.expectThrow;
@@ -8,9 +9,14 @@ const awaitEvent = tests.awaitEvent;
 const increaseTime = tests.increaseTime;
 
 contract('TokenHolder', function(accounts) {
+  let timeProvider;
 
-  function now() {
-    return parseInt(new Date().getTime() / 1000);
+  before(async () => {
+    timeProvider = await TimeProvider.new();
+  });
+
+  async function now() {
+    return (await timeProvider.getTime()).toNumber();
   }
 
   async function increaseDays(days) {
@@ -19,7 +25,7 @@ contract('TokenHolder', function(accounts) {
 
   it("should not allow to release at start", async function() {
     var token = await Token.new();
-    var holder = await Holder.new(now(), 86400 * 183, 100, token.address);
+    var holder = await Holder.new(await now(), 86400 * 183, 100, token.address);
     await token.mint(holder.address, 100000);
 
     await expectThrow(
@@ -29,7 +35,7 @@ contract('TokenHolder', function(accounts) {
 
   it("should not allow to release if not owner", async function() {
     var token = await Token.new();
-    var holder = await Holder.new(now() - 86400 * 200, 86400 * 183, 100, token.address);
+    var holder = await Holder.new((await now()) - 86400 * 200, 86400 * 183, 100, token.address);
     await token.mint(holder.address, 100000);
 
     await expectThrow(
@@ -39,7 +45,7 @@ contract('TokenHolder', function(accounts) {
 
   it("should emit Release event", async function() {
     var token = await Token.new();
-    var holder = await Holder.new(now() - 86400 * 200, 86400 * 183, 100, token.address);
+    var holder = await Holder.new((await now()) - 86400 * 200, 86400 * 183, 100, token.address);
     await token.mint(holder.address, 100000);
     var Released = holder.Released({});
 
@@ -51,7 +57,7 @@ contract('TokenHolder', function(accounts) {
 
   it("should allow to release 100 after 6 months", async function() {
     var token = await Token.new();
-    var holder = await Holder.new(now() - 86400 * 200, 86400 * 183, 100, token.address);
+    var holder = await Holder.new((await now()) - 86400 * 200, 86400 * 183, 100, token.address);
     await token.mint(holder.address, 100000);
 
     await holder.release();
@@ -60,7 +66,7 @@ contract('TokenHolder', function(accounts) {
 
   it("should not allow to release more than 100 after 6 months", async function() {
     var token = await Token.new();
-    var holder = await Holder.new(now() - 86400 * 200, 86400 * 183, 100, token.address);
+    var holder = await Holder.new((await now()) - 86400 * 200, 86400 * 183, 100, token.address);
     await token.mint(holder.address, 100000);
 
     await holder.release();
@@ -73,7 +79,7 @@ contract('TokenHolder', function(accounts) {
 
   it("should allow to release 200 after 12 months", async function() {
     var token = await Token.new();
-    var holder = await Holder.new(now() - 86400 * 400, 86400 * 183, 100, token.address);
+    var holder = await Holder.new((await now()) - 86400 * 400, 86400 * 183, 100, token.address);
     await token.mint(holder.address, 100000);
 
     await holder.release();
@@ -82,7 +88,7 @@ contract('TokenHolder', function(accounts) {
 
   it("should release if left a little bit", async () => {
     var token = await Token.new();
-    var holder = await Holder.new(now() - 86400 * 500, 86400 * 183, 100, token.address);
+    var holder = await Holder.new((await now()) - 86400 * 500, 86400 * 183, 100, token.address);
     await token.mint(holder.address, 50);
 
     await holder.release();
@@ -92,7 +98,7 @@ contract('TokenHolder', function(accounts) {
 
   it("should release 100 tokens every 6 months", async function() {
     var token = await Token.new();
-    var holder = await Holder.new(now(), 86400 * 183, 100, token.address);
+    var holder = await Holder.new((await now()), 86400 * 183, 100, token.address);
     await token.mint(holder.address, 100000);
 
     await expectThrow(
