@@ -1,10 +1,10 @@
-const Token = artifacts.require("TrustToken.sol");
+const Token = artifacts.require("TSTToken.sol");
 
 const tests = require("@daonomic/tests-common");
 const expectThrow = tests.expectThrow;
 const randomAddress = tests.randomAddress;
 
-contract('TrustToken', function(accounts) {
+contract('TSTToken', function(accounts) {
 
   let token;
 

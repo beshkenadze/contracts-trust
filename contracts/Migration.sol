@@ -2,16 +2,16 @@ pragma solidity ^0.4.24;
 
 
 import "openzeppelin-solidity/contracts/token/ERC20/ERC20Basic.sol";
-import "./TrustToken.sol";
+import "./TSTToken.sol";
 import "./TokenHolder.sol";
 
 
 contract Migration {
-    TrustToken public token;
+    TSTToken public token;
     mapping(string => address) holders;
 
     constructor(address _owner, uint _start) public {
-        token = new TrustToken(120000000 * 10 ** 18);
+        token = new TSTToken(120000000 * 10 ** 18);
         token.setWhitelist(this, true);
         token.setWhitelist(_owner, true);
         createHolder(_owner, "reserve", 28800000 * 10 ** 18, _start, 183 * 86400, 7200000 * 10 ** 18);

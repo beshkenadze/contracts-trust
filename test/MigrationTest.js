@@ -1,5 +1,5 @@
 const Migration = artifacts.require("Migration.sol");
-const Token = artifacts.require("TrustToken.sol");
+const Token = artifacts.require("TSTToken.sol");
 const TokenHolder = artifacts.require("TokenHolder.sol");
 const TimeProvider = artifacts.require("TimeProvider.sol");
 
