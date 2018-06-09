@@ -4,7 +4,7 @@ import "openzeppelin-solidity/contracts/token/ERC20/StandardBurnableToken.sol";
 import "openzeppelin-solidity/contracts/ownership/Ownable.sol";
 
 contract TSTToken is Ownable, StandardBurnableToken {
-    string public constant name = "TSTToken";
+    string public constant name = "Trust";
     string public constant symbol = "TST";
     uint8 public constant decimals = 18;
 
