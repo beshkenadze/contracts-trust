@@ -11,12 +11,12 @@ contract Migration {
     mapping(string => address) holders;
 
     constructor(address _owner, uint _start) public {
-        token = new TSTToken(120000000 * 10 ** 18);
+        token = new TSTToken(100000000 * 10 ** 18);
         token.setWhitelist(this, true);
         token.setWhitelist(_owner, true);
-        createHolder(_owner, "reserve", 28800000 * 10 ** 18, _start, 183 * 86400, 7200000 * 10 ** 18);
-        createHolder(_owner, "team", 19200000 * 10 ** 18, _start, 183 * 86400, 2500000 * 10 ** 18);
-        createHolder(_owner, "advisors", 7200000 * 10 ** 18, _start - 91 * 86400, 91 * 86400, 1800000 * 10 ** 18);
+        createHolder(_owner, "reserve", 24000000 * 10 ** 18, _start, 183 * 86400, 7200000 * 10 ** 18);
+        createHolder(_owner, "team", 16000000 * 10 ** 18, _start, 183 * 86400, 2500000 * 10 ** 18);
+        createHolder(_owner, "advisors", 6000000 * 10 ** 18, _start - 91 * 86400, 91 * 86400, 1800000 * 10 ** 18);
         token.transfer(_owner, token.balanceOf(this));
         token.transferOwnership(_owner);
     }
