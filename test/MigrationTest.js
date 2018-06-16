@@ -42,69 +42,108 @@ contract('Migration', accounts => {
   });
 
   it("should have totalSupply=100M", async () => {
-    assert.equal((await token.totalSupply()).toFixed(), "120000000000000000000000000");
+    assert.equal((await token.totalSupply()).toFixed(), "100000000000000000000000000");
   });
 
   it("should not allow to release from reserve/team holders at start", async () => {
-	await expectThrow(
+		await expectThrow(
       reserve.release({from: accounts[1]})
-	);
-	await expectThrow(
+		);
+		await expectThrow(
       team.release({from: accounts[2]})
-	);
+		);
   });
 
   it("should leave 54% (for sale + marketing) of tokens to owner", async () => {
-    assert.equal((await token.balanceOf(accounts[5])).toFixed(), "64800000000000000000000000");
+    assert.equal((await token.balanceOf(accounts[5])).toFixed(), "54000000000000000000000000");
   });
 
   it("should allow to release from advisors holder at start", async () => {
     await advisors.release({from: accounts[3]});
-    assert.equal((await token.balanceOf(accounts[3])).toFixed(), "1800000000000000000000000");
+    assert.equal((await token.balanceOf(accounts[3])).toFixed(), "1200000000000000000000000");
   })
 
   it("should allow to release tokens", async () => {
     //after 3 months only advisors can release some more
-	await increaseDays(91);
-	await expectThrow(
-      reserve.release({from: accounts[1]})
-	);
-	await expectThrow(
-      team.release({from: accounts[2]})
-	);
-	await advisors.release({from: accounts[3]});
-	assert.equal((await token.balanceOf(accounts[3])).toFixed(), "3600000000000000000000000");
+		await increaseDays(91);
+		await expectThrow(
+	      reserve.release({from: accounts[1]})
+		);
+		await expectThrow(
+	      team.release({from: accounts[2]})
+		);
+		await advisors.release({from: accounts[3]});
+		assert.equal((await token.balanceOf(accounts[3])).toFixed(), "2400000000000000000000000");
 
-	//after almost 6 months no one can release more tokens
-	await increaseDays(90);
-	await expectThrow(
-      reserve.release({from: accounts[1]})
-	);
-	await expectThrow(
-      team.release({from: accounts[2]})
-	);
-	await expectThrow(
-	  advisors.release({from: accounts[3]})
-	);
+		//after almost 6 months no one can release more tokens
+		await increaseDays(90);
+		await expectThrow(
+	      reserve.release({from: accounts[1]})
+		);
+		await expectThrow(
+	      team.release({from: accounts[2]})
+		);
+		await expectThrow(
+		  advisors.release({from: accounts[3]})
+		);
 
-	//after 6 months every holder can release tokens
-	await increaseDays(2);
-	await reserve.release({from: accounts[1]});
-	await team.release({from: accounts[2]});
-	await advisors.release({from: accounts[3]});
-	assert.equal((await token.balanceOf(accounts[1])).toFixed(), "7200000000000000000000000");
-	assert.equal((await token.balanceOf(accounts[2])).toFixed(), "2500000000000000000000000");
-	assert.equal((await token.balanceOf(accounts[3])).toFixed(), "5400000000000000000000000");
+		//after 6 months every holder can release tokens
+		await increaseDays(2);
+		await reserve.release({from: accounts[1]});
+		await team.release({from: accounts[2]});
+		await advisors.release({from: accounts[3]});
+		assert.equal((await token.balanceOf(accounts[1])).toFixed(), "6000000000000000000000000");
+		assert.equal((await token.balanceOf(accounts[2])).toFixed(), "4000000000000000000000000");
+		assert.equal((await token.balanceOf(accounts[3])).toFixed(), "3600000000000000000000000");
 
-	//and noone can release more now
-	await expectThrow(
-      reserve.release({from: accounts[1]})
-	);
-	await expectThrow(
+		//and noone can release more now
+		await expectThrow(
+	      reserve.release({from: accounts[1]})
+		);
+		await expectThrow(
+	      team.release({from: accounts[2]})
+		);
+		await expectThrow(
+		  advisors.release({from: accounts[3]})
+		);
+
+		await increaseDays(91);
+		await advisors.release({from: accounts[3]});
+		assert.equal((await token.balanceOf(accounts[3])).toFixed(), "4800000000000000000000000");
+
+		await increaseDays(92);
+		await advisors.release({from: accounts[3]});
+	  assert.equal((await token.balanceOf(accounts[3])).toFixed(), "6000000000000000000000000");
+		assert.equal((await token.balanceOf(advisors.address)).toFixed(), "0");
+
+		await expectThrow(
+			advisors.release({from: accounts[3]})
+		);
+
+		await reserve.release({from: accounts[1]});
+    await team.release({from: accounts[2]});
+		assert.equal((await token.balanceOf(accounts[1])).toFixed(), "12000000000000000000000000");
+    assert.equal((await token.balanceOf(accounts[2])).toFixed(), "8000000000000000000000000");
+
+		await increaseDays(183);
+		await reserve.release({from: accounts[1]});
+    await team.release({from: accounts[2]});
+		assert.equal((await token.balanceOf(accounts[1])).toFixed(), "18000000000000000000000000");
+    assert.equal((await token.balanceOf(accounts[2])).toFixed(), "12000000000000000000000000");
+
+		await increaseDays(183);
+		await reserve.release({from: accounts[1]});
+    await team.release({from: accounts[2]});
+		assert.equal((await token.balanceOf(accounts[1])).toFixed(), "24000000000000000000000000");
+    assert.equal((await token.balanceOf(accounts[2])).toFixed(), "16000000000000000000000000");
+
+		await increaseDays(183);
+		await expectThrow(
+			reserve.release({from: accounts[1]})
+		);
+    await expectThrow(
       team.release({from: accounts[2]})
-	);
-	await expectThrow(
-	  advisors.release({from: accounts[3]})
-	);
+    );
+
   });
 });
