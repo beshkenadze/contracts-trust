@@ -54,9 +54,9 @@ contract TokenHolder is Ownable {
             toRelease = left;
         }
         require(toRelease > 0, "nothing to release");
+        released = released.add(toRelease);
         require(token.transfer(msg.sender, toRelease));
         emit Released(toRelease);
-        released = released.add(toRelease);
     }
 
     function calculateVestedAmount() view internal returns (uint) {
