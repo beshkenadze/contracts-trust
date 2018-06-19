@@ -8,7 +8,7 @@ import "./TokenHolder.sol";
 
 contract Migration {
     TSTToken public token;
-    mapping(string => address) holders;
+    mapping(string => address) private holders;
 
     constructor(address _owner, uint _start) public {
         token = new TSTToken(100000000 * 10 ** 18);
@@ -29,7 +29,7 @@ contract Migration {
         holders[_name] = holder;
     }
 
-    function getHolder(string _name) constant public returns (address) {
+    function getHolder(string _name) view public returns (address) {
         return holders[_name];
     }
 }
