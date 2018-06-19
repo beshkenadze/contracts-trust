@@ -16,7 +16,7 @@ contract Migration {
         token.setWhitelist(_owner, true);
         createHolder(_owner, "reserve", 24000000 * 10 ** 18, _start, 183 * 86400, 6000000 * 10 ** 18);
         createHolder(_owner, "team", 16000000 * 10 ** 18, _start, 183 * 86400, 4000000 * 10 ** 18);
-        createHolder(_owner, "advisors", 6000000 * 10 ** 18, _start - 91 * 86400, 91 * 86400, 1200000 * 10 ** 18);
+        createHolder(_owner, "advisors", 6000000 * 10 ** 18, _start - 91 * 86400, 91 * 86400, 1500000 * 10 ** 18);
         token.transfer(_owner, token.balanceOf(this));
         token.transferOwnership(_owner);
     }

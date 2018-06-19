@@ -60,7 +60,7 @@ contract('Migration', accounts => {
 
   it("should allow to release from advisors holder at start", async () => {
     await advisors.release({from: accounts[3]});
-    assert.equal((await token.balanceOf(accounts[3])).toFixed(), "1200000000000000000000000");
+    assert.equal((await token.balanceOf(accounts[3])).toFixed(), "1500000000000000000000000");
   })
 
   it("should allow to release tokens", async () => {
@@ -73,7 +73,7 @@ contract('Migration', accounts => {
 	      team.release({from: accounts[2]})
 		);
 		await advisors.release({from: accounts[3]});
-		assert.equal((await token.balanceOf(accounts[3])).toFixed(), "2400000000000000000000000");
+		assert.equal((await token.balanceOf(accounts[3])).toFixed(), "3000000000000000000000000");
 
 		//after almost 6 months no one can release more tokens
 		await increaseDays(90);
@@ -94,7 +94,7 @@ contract('Migration', accounts => {
 		await advisors.release({from: accounts[3]});
 		assert.equal((await token.balanceOf(accounts[1])).toFixed(), "6000000000000000000000000");
 		assert.equal((await token.balanceOf(accounts[2])).toFixed(), "4000000000000000000000000");
-		assert.equal((await token.balanceOf(accounts[3])).toFixed(), "3600000000000000000000000");
+		assert.equal((await token.balanceOf(accounts[3])).toFixed(), "4500000000000000000000000");
 
 		//and noone can release more now
 		await expectThrow(
@@ -109,16 +109,13 @@ contract('Migration', accounts => {
 
 		await increaseDays(91);
 		await advisors.release({from: accounts[3]});
-		assert.equal((await token.balanceOf(accounts[3])).toFixed(), "4800000000000000000000000");
+		assert.equal((await token.balanceOf(accounts[3])).toFixed(), "6000000000000000000000000");
 
 		await increaseDays(92);
-		await advisors.release({from: accounts[3]});
-	  assert.equal((await token.balanceOf(accounts[3])).toFixed(), "6000000000000000000000000");
-		assert.equal((await token.balanceOf(advisors.address)).toFixed(), "0");
-
 		await expectThrow(
 			advisors.release({from: accounts[3]})
 		);
+		assert.equal((await token.balanceOf(advisors.address)).toFixed(), "0");
 
 		await reserve.release({from: accounts[1]});
     await team.release({from: accounts[2]});
