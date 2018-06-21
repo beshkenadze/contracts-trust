@@ -6,8 +6,8 @@ module.exports = {
       },
       network_id: 3,
       from: "0x9aa2811e605496c18dccf8ef6b1da8d7eb8dabe4",
-      gas: 3000000,
-	  gasPrice: 3000000000
+      gas: 3500000,
+	    gasPrice: 3000000000
     },
     mainnet: {
       provider: () => {
@@ -16,7 +16,7 @@ module.exports = {
       network_id: 1,
 //      from: "0x2b5cb0d75bc06e58630c9a79ccf4beafec36e19a",
       gas: 100000,
-	  gasPrice: 1000000000
+	    gasPrice: 1000000000
     }
   },
   solc: {
